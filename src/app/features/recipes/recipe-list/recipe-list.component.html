@@ -1,0 +1,18 @@
+<div *ngIf="loading">Chargement des recettes...</div>
+
+<div *ngIf="!loading && recipes.length === 0">
+  Aucune recette trouvée.
+</div>
+
+<div class="recipes-grid" *ngIf="!loading && recipes.length > 0">
+  <mat-card *ngFor="let recipe of recipes" class="recipe-card">
+    <mat-card-title>{{ recipe.title }}</mat-card-title>
+    <mat-card-content>
+      <p>{{ recipe.description || 'Pas de description' }}</p>
+      <p>Portions : {{ recipe.servings }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button [routerLink]="['/recipes', recipe.id]">Voir le détail</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
