@@ -1,5 +1,15 @@
-<main class="main">
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
-</main>
+<mat-toolbar color="primary">
+  <span class="app-title" routerLink="/">KitchenBook</span>
+
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="/recipes">
+    Recettes
+  </a>
+
+  <a mat-button routerLink="/recipes/new">
+    Nouvelle recette
+  </a>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
