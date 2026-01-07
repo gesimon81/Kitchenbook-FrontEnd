@@ -17,8 +17,11 @@ export class RecipeService {
     return this.http.get<Recipe[]>(this.apiUrl);
   }
 
-  //TODO method not implemented in back
   getRecipeById(id: number): Observable<Recipe> {
     return this.http.get<Recipe>(`${this.apiUrl}/${id}`);
+  }
+
+  deleteRecipeById(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

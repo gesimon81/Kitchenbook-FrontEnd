@@ -2,3 +2,34 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-snack-bar-container.custom-snackbar,
+.mat-mdc-snack-bar-container.custom-snackbar,
+.mdc-snackbar.custom-snackbar {
+  /* keep a selector for legacy and MDC implementations */
+}
+
+/* Target the actual surface used by MDC-based snackbars */
+.mat-mdc-snack-bar-container.custom-snackbar .mat-mdc-snack-bar-surface,
+.mdc-snackbar.custom-snackbar .mdc-snackbar__surface,
+.mat-snack-bar-container.custom-snackbar {
+  background-color: #1976d2;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Ensure label and action text inherit the color */
+.mat-mdc-snack-bar-container.custom-snackbar .mat-mdc-snack-bar-label,
+.mdc-snackbar.custom-snackbar .mdc-snackbar__label,
+.mat-snack-bar-container.custom-snackbar .mat-simple-snack-bar .mat-mdc-snack-bar-label {
+  color: #fff;
+  margin: 0;
+}
+
+.mat-mdc-snack-bar-container.custom-snackbar .mat-mdc-snack-bar-actions .mdc-button__label,
+.mdc-snackbar.custom-snackbar .mdc-snackbar__actions .mdc-button__label {
+  color: rgba(255,255,255,0.95);
+}
