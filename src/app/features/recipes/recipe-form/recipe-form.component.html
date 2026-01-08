@@ -1,0 +1,64 @@
+<form [formGroup]="recipeForm" (ngSubmit)="submit()">
+
+  <!-- TITLE -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Titre</mat-label>
+    <input matInput formControlName="title" />
+    <mat-error *ngIf="recipeForm.get('title')?.hasError('required')">
+      Le titre est obligatoire
+    </mat-error>
+  </mat-form-field>
+
+  <!-- DESCRIPTION -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Description</mat-label>
+    <textarea matInput rows="3" formControlName="description"></textarea>
+  </mat-form-field>
+
+  <!-- SERVINGS -->
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre de portions</mat-label>
+    <input matInput type="number" formControlName="servings" min="1"/>
+    <mat-error *ngIf="recipeForm.get('servings')?.hasError('min')">
+        Le nombre de portions doit être au minimum 1
+    </mat-error>
+  </mat-form-field>
+
+  <h3>Ingrédients</h3>
+
+  <!-- INGREDIENT LIST -->
+  <div formArrayName="ingredients">
+    <div
+      *ngFor="let ingredient of ingredients.controls; let i = index"
+      [formGroupName]="i"
+      class="ingredient-row"
+    >
+      <input matInput placeholder="Nom" formControlName="name" />
+      <input matInput type="number" placeholder="Quantité" formControlName="quantity" />
+
+      <mat-select placeholder="Unité" formControlName="unit">
+        <mat-option *ngFor="let unit of unitOptions" [value]="unit">
+          {{ unit }}
+        </mat-option>
+      </mat-select>
+
+      <button mat-button color="warn" type="button" (click)="removeIngredient(i)">
+        Supprimer
+      </button>
+    </div>
+  </div>
+
+  <!-- ADD INGREDIENT (MVP simple) -->
+  <button mat-button type="button" (click)="addIngredient({ name: '', quantity: 1, unit: unitOptions[0] })"
+  >
+    + Ajouter un ingrédient
+  </button>
+
+  <!-- SUBMIT -->
+  <div style="margin-top: 24px">
+    <button mat-raised-button color="primary" type="submit" [disabled]="recipeForm.invalid">
+      Créer la recette
+    </button>
+  </div>
+
+</form>

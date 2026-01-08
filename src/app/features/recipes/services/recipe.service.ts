@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Recipe } from '../models/recipe.model';
 import { environment } from 'src/environments/environment';
+import { RecipeCreate } from '../models/recipe-create.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,9 @@ export class RecipeService {
 
   deleteRecipeById(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  createRecipe(recipeBody: RecipeCreate): Observable<void> {
+    return this.http.post<void>(this.apiUrl, recipeBody);
   }
 }

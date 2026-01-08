@@ -64,7 +64,7 @@ export class RecipeListComponent implements OnInit {
           next: () => {
             this.recipes = this.recipes.filter(r => r.id !== recipeId);
             this.snackBar.open("Recette supprimée ✅", 'Fermer', {
-              duration: 30000,
+              duration: 3000,
               horizontalPosition: 'right',
               verticalPosition: 'top',
               panelClass: ['custom-snackbar']
@@ -73,7 +73,7 @@ export class RecipeListComponent implements OnInit {
           error: (err) => {
             console.error('Erreur lors de la suppression', err);
             this.snackBar.open("Erreur lors de la suppression ❌", 'Fermer', {
-              duration: 50000,
+              duration: 5000,
               horizontalPosition: 'right',
               verticalPosition: 'top',
               panelClass: ['custom-snackbar']
