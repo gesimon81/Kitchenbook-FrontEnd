@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RecipeService } from '../services/recipe.service';
 import { RecipeCreate } from '../models/recipe-create.model';
@@ -8,6 +8,7 @@ import { RecipeIngredientCreate } from '../models/recipe-ingredient-create.model
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatIcon } from "@angular/material/icon";
 
 @Component({
   selector: 'app-recipe-form',
@@ -16,8 +17,10 @@ import { MatSelectModule } from '@angular/material/select';
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
-    MatSelectModule
-  ],
+    MatSelectModule,
+    MatIcon,
+    FormsModule
+],
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.css'
 })
