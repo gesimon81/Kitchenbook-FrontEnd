@@ -18,6 +18,15 @@
 
     <mat-divider></mat-divider>
 
+    <div *ngIf="adminMode$ | async">
+      <mat-card-actions>
+        <button mat-button *ngIf="adminMode$ | async" [routerLink]="['/recipes', recipe.id, 'edit']">✏️</button>
+        <button mat-button *ngIf="adminMode$ | async" (click)="deleteRecipe(recipe.id)">🗑</button>
+      </mat-card-actions>
+
+      <mat-divider></mat-divider>
+    </div>
+
     <!-- Description -->
     <mat-card-content *ngIf="recipe.description">
       <p class="description">

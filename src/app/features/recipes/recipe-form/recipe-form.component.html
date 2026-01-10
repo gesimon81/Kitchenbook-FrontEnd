@@ -71,6 +71,9 @@
 
   <!-- SUBMIT -->
   <div style="margin-top: 24px">
+    <button mat-raised-button color="primary" type="button" (click)="cancel()">
+      Annuler
+    </button>
     <button mat-raised-button color="primary" type="submit" [disabled]="recipeForm.invalid || (isFormEdit && !recipeId)">
       {{ isFormEdit ? 'Mettre à jour' : 'Créer la recette' }}
     </button>

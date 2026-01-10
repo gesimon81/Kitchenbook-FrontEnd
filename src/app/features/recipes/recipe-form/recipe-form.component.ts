@@ -142,4 +142,13 @@ export class RecipeFormComponent {
     }
     
   }
+
+  cancel() {
+    if(this.isFormEdit && this.recipeId) {
+      this.router.navigate(['/recipes', this.recipeId]);      
+    } else {
+      this.router.navigate(['/recipes'])
+    };
+  }
+  
 }
