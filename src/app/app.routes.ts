@@ -5,6 +5,7 @@ import { RecipeFormComponent } from './features/recipes/recipe-form/recipe-form.
 export const routes: Routes = [
   { path: '', redirectTo: 'recipes', pathMatch: 'full' },
   { path: 'recipes', component: RecipeListComponent },
-  { path: 'recipes/new', component: RecipeFormComponent },
+  { path: 'recipes/new', loadComponent: () => import('./features/recipes/recipe-form/recipe-form.component').then(m => m.RecipeFormComponent) },
+  { path: 'recipes/:id/edit', loadComponent: () => import('./features/recipes/recipe-form/recipe-form.component').then(m => m.RecipeFormComponent) },
   { path: 'recipes/:id', loadComponent: () => import('./features/recipes/recipe-detail/recipe-detail.component').then(m => m.RecipeDetailComponent) },
 ];

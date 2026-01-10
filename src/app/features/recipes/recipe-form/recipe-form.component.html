@@ -1,4 +1,4 @@
-<h2>Nouvelle recette</h2>
+<h2>{{ isFormEdit ? 'Mettre à jour la recette' : 'Nouvelle recette' }}</h2>
 
 <form [formGroup]="recipeForm" (ngSubmit)="submit()">
 
@@ -55,7 +55,7 @@
         </mat-select>
       </mat-form-field>
 
-      <button mat-icon-button color="warn" (click)="removeIngredient(i)">
+      <button mat-icon-button type="button" color="warn" (click)="removeIngredient(i)">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
@@ -71,8 +71,8 @@
 
   <!-- SUBMIT -->
   <div style="margin-top: 24px">
-    <button mat-raised-button color="primary" type="submit" [disabled]="recipeForm.invalid">
-      Créer la recette
+    <button mat-raised-button color="primary" type="submit" [disabled]="recipeForm.invalid || (isFormEdit && !recipeId)">
+      {{ isFormEdit ? 'Mettre à jour' : 'Créer la recette' }}
     </button>
   </div>
 

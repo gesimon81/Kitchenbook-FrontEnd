@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Recipe } from '../models/recipe.model';
 import { environment } from 'src/environments/environment';
 import { RecipeCreate } from '../models/recipe-create.model';
+import { RecipeUpdate } from '../models/recipe-update.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,9 @@ export class RecipeService {
 
   createRecipe(recipeBody: RecipeCreate): Observable<void> {
     return this.http.post<void>(this.apiUrl, recipeBody);
+  }
+
+  updateRecipe(id: number, recipeBody: RecipeUpdate): Observable<Recipe> {
+    return this.http.put<Recipe>(`${this.apiUrl}/${id}`, recipeBody);
   }
 }

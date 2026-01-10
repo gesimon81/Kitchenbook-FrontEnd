@@ -85,7 +85,7 @@ export class RecipeListComponent implements OnInit {
   }
 
 
-  editRecipe(_t12: Recipe) {
-    throw new Error('Method not implemented.');
-  }
+  /*editRecipe(recipeId: number) {
+    this.rou
+  }*/
 }
