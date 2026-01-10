@@ -1,0 +1,93 @@
+/* :host cible l'élément <app-recipe-form> */
+:host {
+  display: flex;
+  flex-direction: column; /* tous les enfants en colonne */
+  align-items: flex-start; /* alignement à gauche */
+  gap: 16px; /* espace vertical entre chaque input */
+  width: 100%;
+  max-width: 600px; /* limite la largeur pour les grands écrans */
+  padding: 16px; /* petit padding autour du formulaire */
+  box-sizing: border-box;
+}
+
+/* Tous les mat-form-field à 100% de largeur */
+mat-form-field {
+  width: 100%;
+}
+
+/* Inputs et textarea stretch */
+input[matInput],
+textarea[matInput],
+mat-select {
+  width: 100%;
+}
+
+/* Boutons d'action alignés à droite */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+/* =========================
+   Partie ingrédients
+   ========================= */
+
+/* Container de la liste d'ingrédients */
+.ingredients-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* espacement vertical entre chaque ingrédient (moins que le gap général) */
+  width: 100%;
+}
+
+/* Ligne Nom d'ingrédient */
+.ingredient-name {
+  width: 100%;
+}
+
+/* Ligne Quantité + Unité */
+.ingredient-quantity-unit {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* espace entre quantité et unité */
+}
+
+
+/* Make both fields share the row and size proportionally */
+.ingredient-quantity-unit mat-form-field {
+  flex: 1;
+  min-width: 0; /* allow shrinking inside flex */
+}
+
+/* Quantity slightly larger than unit */
+.ingredient-quantity-unit mat-form-field.ingredient-quantity {
+  flex: 1.6;
+}
+.ingredient-quantity-unit mat-form-field.ingredient-unit {
+  flex: 1;
+}
+
+/* Ensure the inner infix (visual area) has a consistent height and alignment */
+.ingredient-quantity-unit mat-form-field .mat-form-field-infix {
+  height: 36px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+}
+
+/* Align the select trigger content and push the arrow to the right */
+.ingredient-quantity-unit mat-form-field .mat-select-trigger {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Bouton supprimer aligné à droite de la ligne Quantité/Unité */
+.ingredient-quantity-unit button {
+  margin-left: auto;
+}
