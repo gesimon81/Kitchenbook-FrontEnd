@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmDialogData } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { SearchUtilsService } from 'src/app/shared/services/search-utils.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -22,13 +23,19 @@ export class RecipeListComponent implements OnInit {
   adminMode$!: Observable<boolean>;
   
   recipes: Recipe[] = [];
+
+  // While filtering, we don't alter recipes to avoid the need of a new API request
+  filteredRecipes: Recipe[] = [];
+  searchTerm = '';
+
   loading = true; 
 
   constructor(
     private recipeService: RecipeService, 
     public adminModeService: AdminModeService, 
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private searchUtils: SearchUtilsService
   ) {
     this.adminMode$ = this.adminModeService.adminMode$;
   }
@@ -37,6 +44,7 @@ export class RecipeListComponent implements OnInit {
     this.recipeService.getAllRecipes().subscribe({
       next: (data) => {
         this.recipes = data;
+        this.filteredRecipes = data;
         this.loading = false;
       },
       error: (err) => {
@@ -84,8 +92,11 @@ export class RecipeListComponent implements OnInit {
     });
   }
 
+  onSearchChange(value: string): void {
+    this.searchTerm = value;
 
-  /*editRecipe(recipeId: number) {
-    this.rou
-  }*/
+    this.filteredRecipes = this.recipes.filter(recipe =>
+      this.searchUtils.recipeMatches(recipe, value)
+    );
+  }
 }
