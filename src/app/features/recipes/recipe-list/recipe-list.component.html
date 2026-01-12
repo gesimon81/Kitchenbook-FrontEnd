@@ -1,0 +1,54 @@
+<h2>Liste des recettes</h2>
+
+<div *ngIf="loading">Chargement des recettes...</div>
+
+<div *ngIf="!loading && recipes.length === 0">
+  Aucune recette trouvée.
+</div>
+
+<div *ngIf="!loading && recipes.length > 0">
+  <div class="recipe-filter">
+    <p><b>Filtrer les recettes (nom ou ingrédient)</b></p>
+    <div class="filter-row">
+      <input
+        #searchInput
+        type="text"
+        placeholder="ex: chocolat"
+        [value]="searchTerm"
+        (input)="onSearchChange(searchInput.value)"
+      />
+
+      <button
+        type="button"
+        class="reset-btn"
+        *ngIf="searchTerm && searchTerm.trim() !== ''"
+        (click)="searchInput.value=''; onSearchChange('')"
+        aria-label="Réinitialiser le filtre"
+      >
+        Réinitialiser
+      </button>
+    </div>
+  </div>
+
+  <br/><br/>
+
+  <div *ngIf="!loading && filteredRecipes.length === 0">
+    Aucune recette trouvée.
+  </div>
+
+  <div class="recipes-grid" *ngIf="!loading && filteredRecipes.length > 0">
+    <mat-card *ngFor="let recipe of filteredRecipes" class="recipe-card">
+      <mat-card-title>{{ recipe.title }}</mat-card-title>
+      <mat-card-content>
+        <p>{{ recipe.description || 'Pas de description' }}</p>
+        <p>Portions : {{ recipe.servings }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button [routerLink]="['/recipes', recipe.id]">Voir le détail</button>
+        <button mat-button *ngIf="adminMode$ | async" [routerLink]="['/recipes', recipe.id, 'edit']">✏️</button>
+        <button mat-button *ngIf="adminMode$ | async" (click)="deleteRecipe(recipe.id)">🗑</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+

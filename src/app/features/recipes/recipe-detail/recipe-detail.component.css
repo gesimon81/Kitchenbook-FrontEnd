@@ -1,0 +1,22 @@
+.recipe-card {
+  max-width: 800px;
+  margin: 24px auto;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 12px 0;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+}
+
+.back-button {
+  max-width: 800px;
+  margin: 16px auto 0;
+}

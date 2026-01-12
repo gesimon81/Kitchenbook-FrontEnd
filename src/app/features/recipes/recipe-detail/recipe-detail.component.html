@@ -1,0 +1,66 @@
+<ng-container *ngIf="recipe; else loading">
+  <div class="back-button">
+    <button mat-button color="primary" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+      Retour
+    </button>
+  </div>
+
+  <mat-card class="recipe-card">
+
+    <!-- Titre -->
+    <mat-card-header>
+      <mat-card-title>{{ recipe.title }}</mat-card-title>
+      <mat-card-subtitle>
+        {{ recipe.servings }} portion{{ recipe.servings > 1 ? 's' : '' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+
+    <div *ngIf="adminMode$ | async">
+      <mat-card-actions>
+        <button mat-button *ngIf="adminMode$ | async" [routerLink]="['/recipes', recipe.id, 'edit']">✏️</button>
+        <button mat-button *ngIf="adminMode$ | async" (click)="deleteRecipe(recipe.id)">🗑</button>
+      </mat-card-actions>
+
+      <mat-divider></mat-divider>
+    </div>
+
+    <!-- Description -->
+    <mat-card-content *ngIf="recipe.description">
+      <p class="description">
+        {{ recipe.description }}
+      </p>
+    </mat-card-content>
+
+    <mat-divider></mat-divider>
+
+    <!-- Ingrédients -->
+    <mat-card-content>
+      <h3>Ingrédients</h3>
+
+      <mat-list>
+        <mat-list-item *ngFor="let ingredient of recipe.ingredients">
+
+          <div matListItemTitle>
+            {{ ingredient.name }}
+          </div>
+
+          <div matListItemLine>
+            {{ ingredient.quantity }}
+            <span *ngIf="ingredient.unit"> {{ ingredient.unit }}</span>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+
+  </mat-card>
+</ng-container>
+
+<!-- Loader -->
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+</ng-template>

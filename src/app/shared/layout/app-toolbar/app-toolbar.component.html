@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+  <span class="app-title" routerLink="/">KitchenBook</span>
+
+  <span class="spacer"></span>
+
+  <a mat-button [routerLink]="['/recipes']" (click)="resetSearch()">
+    Recettes
+  </a>
+
+  <!-- TODO -->
+  <a mat-button *ngIf="adminMode$ | async" routerLink="/recipes/new">
+    Nouvelle recette
+  </a>
+
+  <button mat-button (click)="adminModeService.toggle()">
+    {{ (adminMode$ | async) ? 'Quitter le mode admin' : 'Mode admin' }}
+  </button>
+
+  <app-recipe-search></app-recipe-search>
+</mat-toolbar>
