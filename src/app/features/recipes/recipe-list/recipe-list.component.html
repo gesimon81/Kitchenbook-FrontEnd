@@ -9,13 +9,25 @@
 <div *ngIf="!loading && recipes.length > 0">
   <div class="recipe-filter">
     <p><b>Filtrer les recettes (nom ou ingrédient)</b></p>
-    <input
-      #searchInput
-      type="text"
-      placeholder="ex: chocolat"
-      [value]="searchTerm"
-      (input)="onSearchChange(searchInput.value)"
-    />
+    <div class="filter-row">
+      <input
+        #searchInput
+        type="text"
+        placeholder="ex: chocolat"
+        [value]="searchTerm"
+        (input)="onSearchChange(searchInput.value)"
+      />
+
+      <button
+        type="button"
+        class="reset-btn"
+        *ngIf="searchTerm && searchTerm.trim() !== ''"
+        (click)="searchInput.value=''; onSearchChange('')"
+        aria-label="Réinitialiser le filtre"
+      >
+        Réinitialiser
+      </button>
+    </div>
   </div>
 
   <br/><br/>

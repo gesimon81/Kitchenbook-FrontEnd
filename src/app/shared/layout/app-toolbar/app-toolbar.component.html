@@ -15,4 +15,6 @@
   <button mat-button (click)="adminModeService.toggle()">
     {{ (adminMode$ | async) ? 'Quitter le mode admin' : 'Mode admin' }}
   </button>
+
+  <app-recipe-search></app-recipe-search>
 </mat-toolbar>

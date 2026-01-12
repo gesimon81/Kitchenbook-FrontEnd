@@ -5,6 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { AdminModeService } from 'src/app/core/services/admin-mode.service';
 import { Observable } from 'rxjs';
+import { RecipeSearchComponent } from "../recipe-search/recipe-search.component";
 
 @Component({
   selector: 'app-toolbar',
@@ -13,8 +14,9 @@ import { Observable } from 'rxjs';
     CommonModule,
     RouterModule,
     MatToolbarModule,
-    MatButtonModule
-  ],
+    MatButtonModule,
+    RecipeSearchComponent
+],
   templateUrl: './app-toolbar.component.html',
   styleUrls: ['./app-toolbar.component.css']
 })

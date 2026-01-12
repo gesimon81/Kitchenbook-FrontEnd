@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Recipe } from 'src/app/features/recipes/models/recipe.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SearchUtilsService {
+
+    private searchSubject = new BehaviorSubject<string>('');
+    searchTerm$ = this.searchSubject.asObservable();
 
     normalize(value: string): string {
         return value
@@ -19,6 +23,7 @@ export class SearchUtilsService {
             .trim();
     }
 
+    //Check if a recipe contains a term
     recipeMatches(recipe: Recipe, searchTerm: string): boolean {
         const term = this.normalize(searchTerm);
 
@@ -35,5 +40,10 @@ export class SearchUtilsService {
         );
 
         return titleMatch || ingredientMatch;
+    }
+
+    //Emit a new global research
+    setSearchTerm(term: string) {
+        this.searchSubject.next(this.normalize(term));
     }
 }

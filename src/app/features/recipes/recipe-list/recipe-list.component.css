@@ -80,3 +80,24 @@
     padding: 10px 12px;
   }
 }
+
+/* Reset button next to filter input */
+.filter-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.reset-btn {
+  background: transparent;
+  border: 1px solid rgba(16,24,40,0.08);
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background: rgba(0,0,0,0.04);
+}
+
