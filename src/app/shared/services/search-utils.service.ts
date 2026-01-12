@@ -46,4 +46,8 @@ export class SearchUtilsService {
     setSearchTerm(term: string) {
         this.searchSubject.next(this.normalize(term));
     }
+
+    resetSearch() {
+        this.searchSubject.next(''); // vide le filtre
+    }
 }

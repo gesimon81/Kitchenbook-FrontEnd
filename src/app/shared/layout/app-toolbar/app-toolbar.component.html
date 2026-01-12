@@ -3,7 +3,7 @@
 
   <span class="spacer"></span>
 
-  <a mat-button routerLink="/recipes">
+  <a mat-button [routerLink]="['/recipes']" (click)="resetSearch()">
     Recettes
   </a>
 

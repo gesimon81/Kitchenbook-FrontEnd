@@ -36,7 +36,7 @@ export class RecipeListComponent implements OnInit {
     public adminModeService: AdminModeService, 
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private searchUtils: SearchUtilsService
+    private searchUtilsService: SearchUtilsService
   ) {
     this.adminMode$ = this.adminModeService.adminMode$;
   }
@@ -54,14 +54,14 @@ export class RecipeListComponent implements OnInit {
           this.searchTerm = initialSearch;
           this.applySearch(initialSearch); // <-- applique le filtre sur le tableau rempli
           // Mettre à jour le service pour les futures modifications depuis la barre globale
-          this.searchUtils.setSearchTerm(initialSearch);
+          this.searchUtilsService.setSearchTerm(initialSearch);
         }
       },
       error: err => { this.loading = false; }
     });
 
     // Abonnement pour filtrage dynamique
-    this.searchUtils.searchTerm$.subscribe(term => {
+    this.searchUtilsService.searchTerm$.subscribe(term => {
       this.applySearch(term);
     });
   }
@@ -110,7 +110,7 @@ export class RecipeListComponent implements OnInit {
     this.searchTerm = value;
 
     this.filteredRecipes = this.recipes.filter(recipe =>
-      this.searchUtils.recipeMatches(recipe, value)
+      this.searchUtilsService.recipeMatches(recipe, value)
     );
   }
 
