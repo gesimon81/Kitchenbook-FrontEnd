@@ -4,12 +4,13 @@ import { RecipeService } from '../services/recipe.service';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { AdminModeService } from 'src/app/core/services/admin-mode.service';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent, ConfirmDialogData } from 'src/app/shared/components/confirm-dialog/confirm-dialog.component';
+import { SearchUtilsService } from 'src/app/shared/services/search-utils.service';
 
 @Component({
   selector: 'app-recipe-list',
@@ -22,29 +23,50 @@ export class RecipeListComponent implements OnInit {
   adminMode$!: Observable<boolean>;
   
   recipes: Recipe[] = [];
+
+  // While filtering, we don't alter recipes to avoid the need of a new API request
+  filteredRecipes: Recipe[] = [];
+  searchTerm = '';
+
   loading = true; 
 
   constructor(
     private recipeService: RecipeService, 
+    private route: ActivatedRoute,
     public adminModeService: AdminModeService, 
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private searchUtilsService: SearchUtilsService
   ) {
     this.adminMode$ = this.adminModeService.adminMode$;
   }
 
   ngOnInit(): void {
     this.recipeService.getAllRecipes().subscribe({
-      next: (data) => {
+      next: data => {
         this.recipes = data;
+        this.filteredRecipes = data;
         this.loading = false;
+
+        // Appliquer la recherche initiale ici, après chargement des recettes
+        const initialSearch = this.route.snapshot.queryParamMap.get('search') ?? '';
+        if (initialSearch) {
+          this.searchTerm = initialSearch;
+          this.applySearch(initialSearch); // <-- applique le filtre sur le tableau rempli
+          // Mettre à jour le service pour les futures modifications depuis la barre globale
+          this.searchUtilsService.setSearchTerm(initialSearch);
+        }
       },
-      error: (err) => {
-        console.error('Erreur API pour getAllRecipes()', err);
-        this.loading = false;
-      }
+      error: err => { this.loading = false; }
+    });
+
+    // Abonnement pour filtrage dynamique
+    this.searchUtilsService.searchTerm$.subscribe(term => {
+      this.applySearch(term);
     });
   }
+
+
 
   deleteRecipe(recipeId: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -84,8 +106,15 @@ export class RecipeListComponent implements OnInit {
     });
   }
 
+  applySearch(value: string): void {
+    this.searchTerm = value;
 
-  /*editRecipe(recipeId: number) {
-    this.rou
-  }*/
+    this.filteredRecipes = this.recipes.filter(recipe =>
+      this.searchUtilsService.recipeMatches(recipe, value)
+    );
+  }
+
+  onSearchChange(value: string): void {
+    this.applySearch(value);
+  }
 }
