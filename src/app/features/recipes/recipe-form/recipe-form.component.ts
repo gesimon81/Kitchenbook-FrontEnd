@@ -11,6 +11,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIcon } from "@angular/material/icon";
 import { Recipe } from '../models/recipe.model';
 import { RecipeUpdate } from '../models/recipe-update.model';
+import { Step } from '../models/step.model';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-recipe-form',
@@ -20,7 +23,8 @@ import { RecipeUpdate } from '../models/recipe-update.model';
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
-    MatIcon
+    MatIcon,
+    DragDropModule
 ],
   templateUrl: './recipe-form.component.html',
   styleUrl: './recipe-form.component.css'
@@ -34,6 +38,8 @@ export class RecipeFormComponent {
   recipeForm!: FormGroup;
 
   unitOptions = ['g', 'kg', 'ml', 'l', 'pcs'];
+
+  imagePreview: string | undefined = undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -54,13 +60,18 @@ export class RecipeFormComponent {
     }
   }
 
-
   private initForm(): void {
     this.recipeForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
       servings: [1, [Validators.required, Validators.min(1)]],
-      ingredients: this.fb.array([], Validators.required)
+      imageUrl: [''],
+      ingredients: this.fb.array([], Validators.required),
+      steps: this.fb.array([], Validators.required)
+    });
+
+    this.recipeForm.get('imageUrl')?.valueChanges.subscribe(url => {
+      this.imagePreview = url; // mettre à jour la propriété
     });
   }
 
@@ -72,9 +83,17 @@ export class RecipeFormComponent {
         this.recipeForm.patchValue({
           title: recipe.title,
           description: recipe.description,
-          servings: recipe.servings
+          servings: recipe.servings,
+          imageUrl: recipe.imageUrl || ''
         });
 
+        this.imagePreview = recipe.imageUrl || '';
+
+        // Reset form arrays (sécurité si reload ou navigation interne)
+        this.ingredients.clear();
+        this.steps.clear();
+
+        // INGREDIENTS
         recipe.ingredients.forEach(i =>
           this.ingredients.push(
             this.fb.group({
@@ -84,10 +103,23 @@ export class RecipeFormComponent {
             })
           )
         );
+
+        // STEPS (triés par stepOrder)
+        recipe.steps
+          .sort((a, b) => a.stepOrder - b.stepOrder)
+          .forEach(s =>
+            this.steps.push(
+              this.fb.group({
+                content: [s.content, Validators.required],
+                stepOrder: [s.stepOrder, Validators.required]
+              })
+            )
+          );
       },
       error: () => alert('Erreur de chargement de la recette')
     });
   }
+
 
 
   // INGREDIENTS
@@ -110,6 +142,37 @@ export class RecipeFormComponent {
 
   removeIngredient(index: number): void {
     this.ingredients.removeAt(index);
+  }
+
+  // STEPS
+  get steps(): FormArray {
+    return this.recipeForm.get('steps') as FormArray;
+  }
+
+  addStep(content: string): void {
+    const order = this.steps.length + 1;
+    this.steps.push(
+      this.fb.group({
+        content: [content, Validators.required],
+        stepOrder: [order, Validators.required]
+      })
+    );
+  }
+
+  removeStep(index: number): void {
+    this.steps.removeAt(index);
+  }
+
+  dropStep(event: CdkDragDrop<FormGroup[]>): void {
+    const stepsArray = this.steps.controls;
+    moveItemInArray(stepsArray, event.previousIndex, event.currentIndex);
+    this.updateStepOrders();
+  }
+
+  private updateStepOrders(): void {
+    this.steps.controls.forEach((ctrl, idx) => {
+      ctrl.get('stepOrder')?.setValue(idx + 1, { emitEvent: false });
+    });
   }
 
   // SUBMIT

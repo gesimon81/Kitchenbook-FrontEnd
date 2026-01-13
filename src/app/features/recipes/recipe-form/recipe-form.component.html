@@ -26,47 +26,90 @@
     </mat-error>
   </mat-form-field>
 
-<h3>Ingrédients</h3>
+  <!-- IMAGE URL -->
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>URL de l'image</mat-label>
+    <input matInput formControlName="imageUrl" placeholder="https://example.com/mon-image.jpg" />
+  </mat-form-field>
 
-<!-- INGREDIENT LIST -->
-<div class="ingredients-list" formArrayName="ingredients">
-  <div class="ingredient-item" *ngFor="let ingredient of ingredients.controls; let i = index" [formGroupName]="i">
-    
-    <!-- Ligne Nom -->
-    <mat-form-field class="ingredient-name" appearance="outline">
-      <mat-label>Nom</mat-label>
-      <input matInput formControlName="name" />
-    </mat-form-field>
-
-    <!-- Ligne Quantité + Unité + Supprimer -->
-    <div class="ingredient-quantity-unit">
-      <mat-form-field appearance="outline" class="ingredient-quantity">
-        <mat-label>Quantité</mat-label>
-        <input matInput type="number" placeholder="Quantité" formControlName="quantity" min="0"/>
-        <mat-error *ngIf="recipeForm.get('servings')?.hasError('min')">
-          La quantité doit être au minimum de 0.01
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="ingredient-unit">
-        <mat-label>Unité</mat-label>
-        <mat-select formControlName="unit">
-          <mat-option *ngFor="let u of unitOptions" [value]="u">{{ u }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <button mat-icon-button type="button" color="warn" (click)="removeIngredient(i)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-
+  <!-- PREVIEW IMAGE -->
+  <div *ngIf="imagePreview" class="image-preview-container">
+    <img [src]="imagePreview" alt="Aperçu de l'image" class="image-preview" />
   </div>
-</div>
 
-  <!-- ADD INGREDIENT (MVP simple) -->
-  <button mat-button type="button" (click)="addIngredient({ name: '', quantity: 1, unit: unitOptions[0] })"
-  >
+  <h3>Ingrédients</h3>
+
+  <!-- INGREDIENT LIST -->
+  <div class="ingredients-list" formArrayName="ingredients">
+    <div class="ingredient-item" *ngFor="let ingredient of ingredients.controls; let i = index" [formGroupName]="i">
+      
+      <!-- Ligne Nom -->
+      <mat-form-field class="ingredient-name" appearance="outline">
+        <mat-label>Nom</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <!-- Ligne Quantité + Unité + Supprimer -->
+      <div class="ingredient-quantity-unit">
+        <mat-form-field appearance="outline" class="ingredient-quantity">
+          <mat-label>Quantité</mat-label>
+          <input matInput type="number" placeholder="Quantité" formControlName="quantity" min="0"/>
+          <mat-error *ngIf="recipeForm.get('servings')?.hasError('min')">
+            La quantité doit être au minimum de 0.01
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="ingredient-unit">
+          <mat-label>Unité</mat-label>
+          <mat-select formControlName="unit">
+            <mat-option *ngFor="let u of unitOptions" [value]="u">{{ u }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-icon-button type="button" color="warn" (click)="removeIngredient(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ADD INGREDIENT -->
+  <button mat-button type="button" (click)="addIngredient({ name: '', quantity: 1, unit: unitOptions[0] })">
     + Ajouter un ingrédient
+  </button>
+
+  <br/>
+
+  <h3>Étapes</h3>
+
+  <!-- STEP LIST -->
+  <div cdkDropList formArrayName="steps" (cdkDropListDropped)="dropStep($event)">
+    <div class="step-item" *ngFor="let step of steps.controls; let i = index" [formGroupName]="i" cdkDrag>
+
+      <div class="drag-handle" cdkDragHandle>
+        <mat-icon>drag_handle</mat-icon>
+      </div>
+
+      <!-- Ligne Content -->
+      <mat-form-field class="step-content" appearance="outline">
+        <mat-label>Description de l'étape</mat-label>
+        <textarea matInput formControlName="content"></textarea>
+      </mat-form-field>
+
+      <!-- upprimer -->
+      <div >
+        <button mat-icon-button type="button" color="warn" (click)="removeStep(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ADD STEP -->
+  <button mat-button type="button" (click)="addStep('')">
+    + Ajouter une étape
   </button>
 
   <!-- SUBMIT -->
