@@ -62,7 +62,7 @@
         <mat-form-field appearance="outline" class="ingredient-unit">
           <mat-label>Unité</mat-label>
           <mat-select formControlName="unit">
-            <mat-option *ngFor="let u of unitOptions" [value]="u">{{ u }}</mat-option>
+            <mat-option *ngFor="let unit of unitOptions" [value]="unit">{{ unit }}</mat-option>
           </mat-select>
         </mat-form-field>
 

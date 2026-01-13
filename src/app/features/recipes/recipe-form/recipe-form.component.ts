@@ -94,15 +94,20 @@ export class RecipeFormComponent {
         this.steps.clear();
 
         // INGREDIENTS
-        recipe.ingredients.forEach(i =>
+        recipe.ingredients.forEach(i => {
+          //Eviter les conflits si une unité spécifique est importée
+          if (i.unit && !this.unitOptions.includes(i.unit)) {
+            this.unitOptions = [...this.unitOptions, i.unit];
+          }
+
           this.ingredients.push(
             this.fb.group({
               name: [i.name, Validators.required],
               quantity: [i.quantity, [Validators.required, Validators.min(0.01)]],
               unit: [i.unit, Validators.required]
             })
-          )
-        );
+          );
+        });
 
         // STEPS (triés par stepOrder)
         recipe.steps
