@@ -66,8 +66,6 @@ export class RecipeListComponent implements OnInit {
     });
   }
 
-
-
   deleteRecipe(recipeId: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
